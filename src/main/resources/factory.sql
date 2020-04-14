@@ -1,10 +1,13 @@
+-- 进入mysql 执行 source factory.sql(本地目录)
+--  source D:\study_springboot\factorylatest\factory1209\factory-manager\src\main\resources\factory.sql
+
 DROP DATABASE IF EXISTS 'factory';
 CREATE DATABASE IF NOT EXISTS 'factory';
 USE 'factory';
 
 -- 创建表结构
 -- 表名和字段名外面的符号 ` 不是单引号，而是英文输入法状态下的反单引号，也就是键盘左上角 esc 按键下面的那一个 ~ 按键
-
+DROP TABLE IF EXISTS  `t_node`;
 CREATE TABLE `t_node` (
   `GSZCM` VARCHAR(100) NOT NULL PRIMARY KEY COMMENT '工商注册码',
   `DWBM` VARCHAR(100)  COMMENT '单位编码',
@@ -17,12 +20,14 @@ CREATE TABLE `t_node` (
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT='节点表';
 
+DROP TABLE IF EXISTS  `t_business_type`;
 CREATE TABLE `t_business_type`(
   `LXBM` VARCHAR(50) NOT NULL PRIMARY KEY COMMENT '类型编码',
   `LXMS` VARCHAR(100) COMMENT '类型描述',
   `GSHY` VARCHAR(20) COMMENT '产品归属行业'
-)DEFAULT CHARTSET=utf8mb4 COMMENT '业务类型表';
+)DEFAULT CHARSET=utf8mb4 COMMENT '业务类型表';
 
+DROP TABLE IF EXISTS  `t_station`;
 CREATE TABLE `t_station`(
   `GWBM` VARCHAR(100) NOT NULL PRIMARY KEY COMMENT '岗位编码',
   `JDBM` VARCHAR(50) COMMENT '节点唯一码',
@@ -33,18 +38,21 @@ CREATE TABLE `t_station`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '岗位表';
 
+DROP TABLE IF EXISTS  `t_limit`;
 CREATE TABLE `t_limit`(
   `QXBM` VARCHAR(100) NOT NULL PRIMARY KEY COMMENT '权限编码',
   `QXMS` VARCHAR(100) COMMENT '权限描述',
   `JDBM` VARCHAR(50) COMMENT '节点唯一码'
 )DEFAULT CHARSET=utf8mb4 COMMENT '权限表';
 
+DROP TABLE IF EXISTS  `t_station_limit`;
 CREATE TABLE `t_station_limit`(
   `GWBM` VARCHAR(100) NOT NULL COMMENT '岗位编码',
   `QXBM` VARCHAR(100) NOT NULL COMMENT '权限编码',
   `JDBM` VARCHAR(50) COMMENT '节点唯一码'
 )DEFAULT CHARSET=utf8mb4 COMMENT '岗位权限表';
 
+DROP TABLE IF EXISTS  `t_employee`;
 CREATE TABLE `t_employee`(
   `YGBM` VARCHAR(100) NOT NULL PRIMARY KEY COMMENT '员工编码',
   `YGXM` VARCHAR(20) NOT NULL COMMENT '员工姓名',
@@ -52,26 +60,29 @@ CREATE TABLE `t_employee`(
   `YGMM` VARCHAR(20)  COMMENT '员工密码',
   `CSRQ` DATE  COMMENT '出生日期',
   `LXDH` VARCHAR(20) COMMENT '联系电话',
-  `LXYX` VARCHAR(30) COMMWNT '联系邮箱',
+  `LXYX` VARCHAR(30) COMMENT '联系邮箱',
   `RZSJ` DATE COMMENT '入职时间',
   `LZSJ` DATE COMMENT '离职时间',
   `JDBM` VARCHAR(50) COMMENT '节点唯一码'
 )DEFAULT CHARSET=utf8mb4 COMMENT '员工表';
 
+DROP TABLE IF EXISTS  `t_employee_station`;
 CREATE TABLE `t_employee_station`(
   `GWBM` VARCHAR(100) NOT NULL COMMENT '岗位编码',
   `YGBM` VARCHAR(100) NOT NULL COMMENT '员工编码',
   `JDBM` VARCHAR(50) COMMENT '节点唯一码'
 )DEFAULT CHARSET=utf8mb4 COMMENT '员工岗位表';
 
+DROP TABLE IF EXISTS  `t_login_record`;
 CREATE TABLE `t_login_record`(
   `YGBM` VARCHAR(100) COMMENT '员工编码',
   `DLSJ` TIMESTAMP COMMENT '登录时间',
   `TCSJ` TIMESTAMP COMMENT '退出时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '员工登录记录表';
 
+DROP TABLE IF EXISTS  `t_product`;
 CREATE TABLE `t_product`(
-  `CPXH` VARCHAR(200) NOT NULL PRIMARY KEY COMMENT '产品型号',
+  `CPXH` VARCHAR(100) NOT NULL PRIMARY KEY COMMENT '产品型号',
   `CPMS` VARCHAR(200) COMMENT '产品描述',
   `JLDW` VARCHAR(10) COMMENT '计量单位',
   `CKJG` DOUBLE COMMENT '参考价格',
@@ -83,6 +94,7 @@ CREATE TABLE `t_product`(
   `JDBM` VARCHAR(50) COMMENT '节点唯一码'
 )DEFAULT CHARSET=utf8mb4 COMMENT '产品基础表';
 
+DROP TABLE IF EXISTS  `t_product_replace`;
 CREATE TABLE `t_product_replace`(
   `CPXH` VARCHAR(200) COMMENT '产品型号',
   `THCPXH` VARCHAR(200) COMMENT '替换产品型号',
@@ -90,6 +102,8 @@ CREATE TABLE `t_product_replace`(
   `THFLBM` VARCHAR(200) COMMENT '替换分类编码'
 )DEFAULT CHARSET=utf8mb4 COMMENT '产品替换表';
 
+
+DROP TABLE IF EXISTS  `t_category`;
 CREATE TABLE `t_category`(
   `LBBM` VARCHAR(20) NOT NULL PRIMARY KEY COMMENT '类别编码',
   `LBMC` VARCHAR(50) COMMENT '类别名称',
@@ -97,6 +111,7 @@ CREATE TABLE `t_category`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '类别(产品)表';
 
+DROP TABLE IF EXISTS  `t_property`;
 CREATE TABLE `t_property`(
   `LBBM` VARCHAR(50) COMMENT '归属类别编码',
   `SXMC` VARCHAR(20)  COMMENT '属性名称',
@@ -104,6 +119,7 @@ CREATE TABLE `t_property`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '属性表';
 
+DROP TABLE IF EXISTS  `t_product_category`;
 CREATE TABLE `t_product_category`(
   `CPXH` VARCHAR(200) COMMENT '产品型号',
   `LBBM` VARCHAR(20) COMMENT '类别编码',
@@ -112,6 +128,7 @@ CREATE TABLE `t_product_category`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '产品分类表';
 
+DROP TABLE IF EXISTS  `t_state`;
 CREATE TABLE `t_state`(
   `ZTBM` VARCHAR(10) NOT NULL PRIMARY KEY COMMENT '状态码',
   `ZTSM` VARCHAR(20) COMMENT '状态说明',
@@ -119,6 +136,7 @@ CREATE TABLE `t_state`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '状态表';
 
+DROP TABLE IF EXISTS  `t_message`;
 CREATE TABLE `t_message`(
   `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `FSJDBM` VARCHAR(100) COMMENT '发送节点编码',
@@ -134,6 +152,7 @@ CREATE TABLE `t_message`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '通知消息表';
 
+DROP TABLE IF EXISTS  `t_product_struction`;
 CREATE TABLE `t_product_struction`(
   `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `CPXH` VARCHAR(100) COMMENT '产品型号',
@@ -145,13 +164,16 @@ CREATE TABLE `t_product_struction`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '产品指导书表';
 
+DROP TABLE IF EXISTS  `t_struction_relation`;
 CREATE TABLE `t_struction_relation`(
   `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `GLBM` VARCHAR(20) COMMENT '关联表名',
   `GLID` VARCHAR(100) COMMENT '关联id',
   `ZDSID` VARCHAR(100) COMMENT '指导书id',
-)DEFAULT CHARSET=utf8mb4 COMMENT '指导书相关表';
+  `TPID` VARCHAR(100) COMMENT '图片id'
+)DEFAULT CHARSET=utf8mb4 COMMENT '指导书图片相关表';
 
+DROP TABLE IF EXISTS  `t_show_text`;
 CREATE TABLE `t_show_text`(
   `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `ZDBM` VARCHAR(10) COMMENT '字段名',
@@ -159,6 +181,7 @@ CREATE TABLE `t_show_text`(
   `BZ` VARCHAR(200) COMMENT '备注'
 )DEFAULT CHARSET=utf8mb4 COMMENT '页面文字显示表';
 
+DROP TABLE IF EXISTS  `t_process`;
 CREATE TABLE `t_process`(
   `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `LXBM` VARCHAR(100) COMMENT '产品类型编码',
@@ -177,12 +200,15 @@ CREATE TABLE `t_process`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '产品工序基础表';
 
+DROP TABLE IF EXISTS  `t_process_relation`;
 CREATE TABLE `t_process_relation`(
   `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `GXID` INT(18) COMMENT '工序id',
   `HGXID` INT(18) COMMENT '后工序id'
 )DEFAULT CHARSET=utf8mb4 COMMENT '工序关系表';
 
+
+DROP TABLE IF EXISTS  `t_process_bom`;
 CREATE TABLE `t_process_bom`(
   `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `CPLXBM` VARCHAR(100) COMMENT '产品类型编码',
@@ -196,3 +222,309 @@ CREATE TABLE `t_process_bom`(
   `BGSJ` TIMESTAMP  COMMENT '变更时间'
 )DEFAULT CHARSET=utf8mb4 COMMENT '工序物料表';
 
+DROP TABLE IF EXISTS  `t_task`;
+CREATE TABLE `t_task`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `RWMS` VARCHAR(200) COMMENT '任务描述'
+)DEFAULT CHARSET=utf8mb4 COMMENT '任务总表';
+
+DROP TABLE IF EXISTS  `t_task_item`;
+CREATE TABLE `t_task_item`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `CPID` VARCHAR(100) NOT NULL COMMENT '产品编码id',
+  `ZRDW` VARCHAR(200) COMMENT '任务描述',
+  `SYM` INT(18) COMMENT '上级任务',
+  `XYM` INT(18) COMMENT '下级合并任务',
+  `TSJQ` DATE COMMENT '特殊交期',
+  `KSSJ` TIMESTAMP COMMENT '开始时间',
+  `JHWGSJ` TIMESTAMP COMMENT '计划完工时间',
+  `ZT` VARCHAR(50) COMMENT '状态',
+  `SHZT` VARCHAR(50) COMMENT '审核状态',
+  `SCBJ` INT(2) COMMENT '删除标记',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间',
+  `CSRWID` INT(18) COMMENT '本单位初始任务id',
+  `YTRWID` INT(18) COMMENT '源头任务id',
+  `DDMXID` INT(18) COMMENT '订单明细id',
+  `RWLXBM` VARCHAR (100) COMMENT '任务类型'
+)DEFAULT CHARSET=utf8mb4 COMMENT '任务明细表';
+
+DROP TABLE IF EXISTS  `t_task_category`;
+CREATE TABLE `t_task_category`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `RWMXID` INT(18) COMMENT '任务明细id',
+  `DDFLID` INT(18) COMMENT '订单分类id',
+  `FLBM` VARCHAR(200) COMMENT '分类编码',
+  `SYM` INT(18) COMMENT '上级任务',
+  `XYM` INT(18) COMMENT '下级合并任务',
+  `KSSJ` TIMESTAMP COMMENT '开始时间',
+  `WGSJ` TIMESTAMP COMMENT '完工时间',
+  `RWSL` INT(18) COMMENT '任务数量',
+  `PCSL` INT(18) COMMENT '排产数量',
+  `WCSL` INT(18) COMMENT '完成数量',
+  `FHSL` INT(18) COMMENT '发货数量',
+  `SSSL` INT(18) COMMENT '实收数量',
+  `CPSL` INT(18) COMMENT '次品数量',
+  `ZT` VARCHAR(50) COMMENT '状态',
+  `SCBJ` INT(2) COMMENT '删除标记',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '任务分类表';
+
+DROP TABLE IF EXISTS  `t_task_process`;
+CREATE TABLE `t_task_process`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `RWID` INT(18) COMMENT '任务总表id',
+  `RWMXID` INT(18) COMMENT '任务明细id',
+  `RWFLID` INT(18) COMMENT '任务分类id',
+  `GXID` INT(18) COMMENT '工序id',
+  `RWSL` INT(18) COMMENT '任务数量'
+)DEFAULT CHARSET=utf8mb4 COMMENT '任务工序表';
+
+DROP TABLE IF EXISTS  `t_process_station`;
+CREATE TABLE `t_process_station`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `RWIMXD` INT(18) COMMENT '任务明细id',
+  `GXID` INT(18) COMMENT '任务工序id',
+  `GWID` INT(18) COMMENT '工位id'
+)DEFAULT CHARSET=utf8mb4 COMMENT '任务工序工位表';
+
+DROP TABLE IF EXISTS  `t_task_bom`;
+CREATE TABLE `t_task_bom`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `RWID` INT(18) COMMENT '任务总表id',
+  `RWMXID` INT(18) COMMENT '任务明细id',
+  `RWFLID` INT(18) COMMENT '任务分类id',
+  `GXID` INT(18) COMMENT '工序id',
+  `WLID` INT(18) COMMENT '物料id',
+  `FLBM` VARCHAR(100) COMMENT '分类编码',
+  `WLSL` INT(18) COMMENT '物料数量',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '任务物料表';
+
+DROP TABLE IF EXISTS  `t_contract`;
+CREATE TABLE `t_contract`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `HTBM` VARCHAR(100) NOT NULL COMMENT '合同编码',
+  `HTMS` VARCHAR(200) COMMENT '合同描述',
+  `YFDM` VARCHAR(200) COMMENT '乙方单位代码',
+  `QDRQ` TIMESTAMP COMMENT '签订日期',
+  `ZT` VARCHAR(50) COMMENT '合同状态',
+  `JRBM` VARCHAR(100) COMMENT '甲方签订人编码',
+  `JRXM` VARCHAR(100) COMMENT '甲人姓名',
+  `YRBM` VARCHAR(100) COMMENT '乙人编码',
+  `YRXM` VARCHAR(100) COMMENT '乙人姓名',
+  `SHDW` VARCHAR(100) COMMENT '收货单位代码',
+  `SHXXDZ` VARCHAR(100) COMMENT '收货详细地址',
+  `SHLXR` VARCHAR(100) COMMENT '收货人姓名',
+  `SHLXDH` VARCHAR(100) COMMENT '收货联系电话',
+  `RWID` VARCHAR(100) COMMENT '源头任务id',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '合同总表';
+
+DROP TABLE IF EXISTS  `t_contract_item`;
+CREATE TABLE `t_contract_item`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `HTBM` INT(18) NOT NULL COMMENT '合同总表id',
+  `HTMXMS` VARCHAR(200) COMMENT '合同明细描述',
+  `CPID` VARCHAR(100) COMMENT '产品id',
+  `TSJQ` TIMESTAMP COMMENT '特殊交期',
+  `SHZT` VARCHAR(50) COMMENT '审核状态',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '合同明细表';
+
+DROP TABLE IF EXISTS  `t_contract_category`;
+CREATE TABLE `t_contract_category`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `HTMXID` INT(18) COMMENT '合同明细id',
+  `FLBM` VARCHAR(200) COMMENT '分类编码',
+  `RWSL` INT(18) COMMENT '任务数量',
+  `PCSL` INT(18) COMMENT '排产数量',
+  `WCSL` INT(18) COMMENT '完成数量',
+  `FHSL` INT(18) COMMENT '发货数量',
+  `SSSL` INT(18) COMMENT '实收数量',
+  `CPSL` INT(18) COMMENT '次品数量',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '合同分类表';
+
+DROP TABLE IF EXISTS  `t_contract_process`;
+CREATE TABLE `t_contract_process`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `HTID` INT(18) COMMENT '任务总表id',
+  `HTMXID` INT(18) COMMENT '任务明细id',
+  `HTFLID` INT(18) COMMENT '任务分类id',
+  `GXID` INT(18) COMMENT '工序id',
+  `RWSL` INT(18) COMMENT '任务数量'
+)DEFAULT CHARSET=utf8mb4 COMMENT '合同工序表';
+
+DROP TABLE IF EXISTS  `t_contract_bom`;
+CREATE TABLE `t_contract_bom`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `HTID` INT(18) COMMENT '任务总表id',
+  `HTMXID` INT(18) COMMENT '任务明细id',
+  `HTFLID` INT(18) COMMENT '任务分类id',
+  `GXID` INT(18) COMMENT '工序id',
+  `WLID` INT(18) COMMENT '物料id',
+  `FLBM` VARCHAR(100) COMMENT '分类编码',
+  `WLSL` INT(18) COMMENT '物料数量',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '合同物料表';
+
+DROP TABLE IF EXISTS  `t_order`;
+CREATE TABLE `t_order`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `HTBM` VARCHAR(100) NOT NULL  COMMENT '合同编码',
+  `HTMS` VARCHAR(200) COMMENT '合同描述',
+  `JFDM` VARCHAR(200) COMMENT '甲方单位代码',
+  `QDRQ` TIMESTAMP COMMENT '签订日期',
+  `ZT` VARCHAR(50) COMMENT '合同状态',
+  `JRBM` VARCHAR(100) COMMENT '甲方签订人编码',
+  `JRXM` VARCHAR(100) COMMENT '甲人姓名',
+  `YRBM` VARCHAR(100) COMMENT '乙人编码',
+  `YRXM` VARCHAR(100) COMMENT '乙人姓名',
+  `SHDW` VARCHAR(100) COMMENT '收货单位代码',
+  `SHXXDZ` VARCHAR(100) COMMENT '收货详细地址',
+  `SHLXR` VARCHAR(100) COMMENT '收货人姓名',
+  `SHLXDH` VARCHAR(100) COMMENT '收货联系电话',
+  `RWID` VARCHAR(100) COMMENT '源头任务id',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '订单总表';
+
+DROP TABLE IF EXISTS  `t_order_item`;
+CREATE TABLE `t_order_item`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `DDID` INT(18) NOT NULL COMMENT '订单总表id',
+  `HTMXID` VARCHAR(200) COMMENT '合同明细id',
+  `DDMXMS` VARCHAR(200) COMMENT '订单明细描述',
+  `CPID` VARCHAR(100) COMMENT '产品id',
+  `TSJQ` TIMESTAMP COMMENT '特殊交期',
+  `SHZT` VARCHAR(50) COMMENT '审核状态',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '订单明细表';
+
+DROP TABLE IF EXISTS  `t_order_category`;
+CREATE TABLE `t_order_category`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `DDMXID` INT(18) COMMENT '订单明细id',
+  `HTFLID` INT(18) COMMENT '合同分类id',
+  `FLBM` VARCHAR(200) COMMENT '分类编码',
+  `RWSL` INT(18) COMMENT '任务数量',
+  `PCSL` INT(18) COMMENT '排产数量',
+  `WCSL` INT(18) COMMENT '完成数量',
+  `FHSL` INT(18) COMMENT '发货数量',
+  `SSSL` INT(18) COMMENT '实收数量',
+  `CPSL` INT(18) COMMENT '次品数量',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '订单分类表';
+
+DROP TABLE IF EXISTS  `t_order_process`;
+CREATE TABLE `t_order_process`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `DDID` INT(18) COMMENT '订单总表id',
+  `DDMXID` INT(18) COMMENT '订单明细id',
+  `DDFLID` INT(18) COMMENT '订单分类id',
+  `GXID` INT(18) COMMENT '工序id',
+  `RWSL` INT(18) COMMENT '任务数量'
+)DEFAULT CHARSET=utf8mb4 COMMENT '订单工序表';
+
+DROP TABLE IF EXISTS  `t_order_bom`;
+CREATE TABLE `t_order_bom`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `DDID` INT(18) COMMENT '订单总表id',
+  `DDMXID` INT(18) COMMENT '订单明细id',
+  `DDFLID` INT(18) COMMENT '订单分类id',
+  `GXID` INT(18) COMMENT '工序id',
+  `HTFLID` INT(18) COMMENT '合同分类id',
+  `WLID` INT(18) COMMENT '物料id',
+  `FLBM` VARCHAR(100) COMMENT '分类编码',
+  `WLSL` INT(18) COMMENT '物料数量',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '订单物料表';
+
+DROP TABLE IF EXISTS  `t_real_products`;
+CREATE TABLE `t_real_products`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `SLM` VARCHAR(50) COMMENT '上联码',
+  `XLM` VARCHAR(50) COMMENT '下联吗',
+  `LYBM` VARCHAR(20) COMMENT '来源表名',
+  `LYID` VARCHAR(20) COMMENT '来源id',
+  `DYBQ` VARCHAR(100) COMMENT '打印标签',
+  `FCBH` INT(18) COMMENT '分拆编号',
+  `CPID` VARCHAR(100) COMMENT '产品id',
+  `FLBM` VARCHAR(100) COMMENT '分类编码',
+  `SL` INT(18) COMMENT '数量',
+  `SCRWID` INT(18) COMMENT '生成任务id',
+  `DQRWID` INT(18) COMMENT '当前任务id',
+  `DQYYZ` VARCHAR(100) COMMENT '当前拥有者(人/单位)',
+  `ZYDJ` VARCHAR(100) COMMENT '转移单据',
+  `DJLX` VARCHAR(20) COMMENT '单据类型(物流/网购订单)',
+  `CSGXID` INT(18) COMMENT '初始工序id',
+  `DQJDBM` VARCHAR(100) COMMENT '当前节点编码',
+  `DQGXBH` VARCHAR(100) COMMENT '当前工序编号',
+  `KF` VARCHAR(100) COMMENT '库房',
+  `KFWZ` VARCHAR(100) COMMENT '库房位置',
+  `BGSJ` TIMESTAMP COMMENT '变更时间',
+  `JLSJ` TIMESTAMP COMMENT '建立时间',
+  `TPM` VARCHAR(100) COMMENT '托盘码',
+  `BZXH` VARCHAR(100) COMMENT '包装箱号'
+)DEFAULT CHARSET=utf8mb4 COMMENT '实物状态表';
+
+DROP TABLE IF EXISTS  `t_real_products_history`;
+CREATE TABLE `t_real_products_history`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `SWBH` VARCHAR(100) NOT NULL COMMENT '实物id',
+  `DWBM` VARCHAR(100)  COMMENT '单位编码',
+  `SLM` VARCHAR(100)  COMMENT '上联码',
+  `SL` INT(18)  COMMENT '包含数量',
+  `ZYNR` VARCHAR(500)  COMMENT '作业内容',
+  `ZYLX` VARCHAR(50)  COMMENT '作业类型',
+  `SYWL` VARCHAR(500)  COMMENT '使用物料',
+  `ZYDD` VARCHAR(500)  COMMENT '作业地点',
+  `JLSJ` TIMESTAMP COMMENT '记录时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '实物历史记录表';
+
+DROP TABLE IF EXISTS  `t_employee_performance`;
+CREATE TABLE `t_employee_performance`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `YGBM` VARCHAR(100) NOT NULL COMMENT '员工编码',
+  `SWBH` VARCHAR(100) NOT NULL COMMENT '实物id',
+  `SL` INT(18)  COMMENT '包含数量',
+  `ZYLX` VARCHAR(50)  COMMENT '类型(次品/废品/合格)',
+  `JLSJ` TIMESTAMP COMMENT '记录时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '员工绩效记录表';
+
+DROP TABLE IF EXISTS  `t_report_template`;
+CREATE TABLE `t_report_template`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `CPID` VARCHAR(100) COMMENT '产品id',
+  `FLBM` VARCHAR(100) COMMENT '分类编码',
+  `GXID` INT(18) COMMENT '工序id',
+  `JYYJ` VARCHAR(50) COMMENT '检验依据',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '报告模板表';
+
+DROP TABLE IF EXISTS  `t_test_item`;
+CREATE TABLE `t_test_item`(
+  `id` INT(18) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `JYXM` VARCHAR(50) COMMENT '检验项目',
+  `JYFF` VARCHAR(50) COMMENT '检验方法',
+  `JYBZ` VARCHAR(200) COMMENT '检验标准',
+  `BZ` VARCHAR(200) COMMENT '备注',
+  `BGSJ` TIMESTAMP  COMMENT '变更时间'
+)DEFAULT CHARSET=utf8mb4 COMMENT '检验项目表';
+
+DROP TABLE IF EXISTS  `t_report_item`;
+CREATE TABLE `t_report_item`(
+  `BGMBID` INT(18) NOT NULL COMMENT '报告模板id',
+  `JYXMID` INT(18) NOT NULL COMMENT '检验项目id'
+)DEFAULT CHARSET=utf8mb4 COMMENT '报告模板明细表';
